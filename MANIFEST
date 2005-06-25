@@ -1,0 +1,7 @@
+Changes
+Makefile.PL
+MANIFEST
+README
+Resize.pm
+t/1.t
+t/large.jpg

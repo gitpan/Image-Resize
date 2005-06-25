@@ -1,0 +1,6 @@
+Revision history for Perl extension Image::Resize.
+
+0.01  Fri Jun 24 16:02:13 2005
+	- original version; created by h2xs 1.22 with options
+		-A -X -n Image::Resize
+
