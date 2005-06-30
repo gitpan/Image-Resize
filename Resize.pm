@@ -1,10 +1,12 @@
 package Image::Resize;
 
+# $Id: Resize.pm,v 1.2 2005/06/30 20:42:50 sherzodr Exp $
+
 use strict;
 use Carp ('croak');
 use GD;
 
-$Image::Resize::VERSION = '0.01';
+$Image::Resize::VERSION = '0.02';
 
 
 sub new {
@@ -43,16 +45,15 @@ sub new {
 
 
 sub width {
-     return $_[0]->gd->width;
+    return ($_[0]->gd->getBounds)[0];
 }
 
 sub height {
-    return $_[0]->gd->height;
+    return ($_[0]->gd->getBounds)[1];
 }
 
 sub gd      {   return $_[0]->{gd}  }
 sub type    {   return $_[0]->{type}}
-
 
 sub resize {
     my $self = shift;
