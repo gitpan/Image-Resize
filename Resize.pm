@@ -1,13 +1,18 @@
 package Image::Resize;
 
-# $Id: Resize.pm,v 1.2 2005/06/30 20:42:50 sherzodr Exp $
+# $Id: Resize.pm,v 1.3 2005/08/19 16:58:23 sherzodr Exp $
 
 use strict;
 use Carp ('croak');
 use GD;
 
-$Image::Resize::VERSION = '0.02';
+$Image::Resize::VERSION = '0.03';
 
+
+#
+# Thanks to Paul Allen <paul.l.allen AT comcast.net> for this tip
+#
+GD::Image->trueColor( 1 );
 
 sub new {
     my ($class, $image) = @_;
@@ -21,7 +26,12 @@ sub new {
     }
     my ($type) = $image =~ m/\.(\w\w\w\w?)$/;
     unless ( $type ) {
-        croak "Image::Resize->new(): type of file '$image' is not known";
+        require Image::Info;
+        my $info = Image::Info::image_info($image);
+        if ( my $error = $info->{error} ) {
+            croak "Image::Info::info(): $error";
+        }
+        $type = $info->{file_ext} or croak "Image::Resize->new(): type of file '$image' is not known";
     }
     my %type_map = (
         jpg         => 'newFromJpeg',
@@ -126,15 +136,15 @@ Image::Resize is one of my attempts to make image resizing easier, more intuitiv
 
 =item new('path/to/image.jpeg')'
 
-constructor method. Creates and returns Image::Resize object. Expects path to the image as its first and only argument. Supported image formats are I<jpeg>, I<png> and I<gif>. Currently extension is required, since its the only way it can identify the file's format. This may, and probably should change in the future.
+Constructor method. Creates and returns Image::Resize object. Expects path to the image as its first and only argument. Supported image formats are I<jpeg>, I<png> and I<gif>. Starting 0.3 extension is no longer required. If it's missing, it will attempt to retrieve the file type using L<Image::Info|Image::Info>, so Image::Info has to be installed to be able to process images without any extension.
 
 =item resize($width, $height);
 
 =item resize($width, $height, $constraint);
 
-Returns a GD::Image object of the new, resized image. Original image is not modified. This lets you create multiple thumbnails of an image using the same Image::Resize object.
+Returns a GD::Image object for the new, resized image. Original image is not modified. This lets you create multiple thumbnails of an image using the same Image::Resize object.
 
-First two arguments are required, which define new image dimensions. By default C<resize()> retains image proportions while resizing. Almost always this is what you expect to happen. In case you don't care about retaining image proportions, pass C<0> as the third argument to C<resize()>.
+First two arguments are required, which define new image dimensions. By default C<resize()> retains image proportions while resizing. This is always what you expect to happen. In case you don't care about retaining image proportions, pass C<0> as the third argument to C<resize()>.
 
 Following example creates a 120x120 thumbnail of a "large" image, and stores it in disk:
 
@@ -158,11 +168,29 @@ Returns original image's width and height respectively. If you want to get resiz
     $gd = $image->resize(120, 120);
     printf("Width: %s, Height: %s\n", $gd->width, $height);
 
+=item type()
+
+Returns suggested file-extension for the image. It's always the same as the extension of the original image. type() is particularly useful if original image didn't have an extension.
+
 =back
 
+=head1 BUGS AND LIMITATIONS
 
+=over 4
 
+=item *
 
+To fool Image::Resize all you need is a false file extension. This is because it tries not to rely on L<Image::Info|Image::Info>, but tries to guess the type by looking at extension alone. It will invoke Image::Info only if an extension is missing. I realize it may be better if it ignores file extensions altogether, and relies solely on Image::Info. I just didn't want to add a prerequisite to fix a rarely encountered problem.
+
+=item *
+
+Someone needs to have a look at my scaling routine. I'm not sure if it's compatible with Image::Magick's C<Scale()>. Needs testing.
+
+=back
+
+=head1 CREDITS
+
+Thanks to Paul Allen <paul.l.allen AT comcast.net> for trueColor(1) tip. Now GD::Resize should work fine for photographs too.
 
 =head1 SEE ALSO
 

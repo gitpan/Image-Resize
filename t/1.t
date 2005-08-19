@@ -7,13 +7,13 @@
 
 use Test::More tests => 1;
 BEGIN { use_ok('Image::Resize') };
-
+use File::Spec;
 #########################
 
 # Insert your test code below, the Test::More module is use()ed here so read
 # its man page ( perldoc Test::More ) for help writing this test script.
 
-my $image = Image::Resize->new('t/large.jpg');
+my $image = Image::Resize->new(File::Spec->catfile('t', 'large.jpg'));
 
 #printf "Original image size: %s x %s\n", $image->gd->width, $image->gd->height;
 
@@ -42,7 +42,7 @@ foreach my $dimensions ( @array ) {
 
     printf "RESIZE: %dx%d...", $width, $height;
     my $gd = $image->resize($width, $height);
-    open(FH, sprintf(">t/resized-%sx%s.jpg", $width, $height)) or die $!;
+    open(FH, sprintf(">t/resized-%sx%s.%s", $width, $height, $image->type)) or die $!;
     print FH $gd->jpeg();
     close(FH) or die $!;
 }
