@@ -5,3 +5,4 @@ README
 Resize.pm
 t/1.t
 t/large.jpg
+META.yml                                 Module meta-data (added by MakeMaker)

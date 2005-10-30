@@ -34,15 +34,15 @@ my @array = (
 #    [300, 500]
     [250, 250],
     [120, 120],
-    [40, 40]
+    [40, 40],
+    [40, 24],
 );
 
 foreach my $dimensions ( @array ) {
     my ($width, $height) = @$dimensions;
-
     printf "RESIZE: %dx%d...", $width, $height;
     my $gd = $image->resize($width, $height);
-    open(FH, sprintf(">t/resized-%sx%s.%s", $width, $height, $image->type)) or die $!;
+    open(FH, sprintf(">t/resized-%sx%s.jpg", $gd->width, $gd->height)) or die $!;
     print FH $gd->jpeg();
     close(FH) or die $!;
 }
