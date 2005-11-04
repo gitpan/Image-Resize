@@ -1,5 +1,8 @@
 Revision history for Perl extension Image::Resize.
 
+0.05    Friday, November 04, 2005
+    - Minor changes in test script
+
 0.04    Saturday, October 29, 2005
     - REMOVED: type() method is obsolete
     - FIX: scaling routine is not compatible with Image::Magick::Scale()

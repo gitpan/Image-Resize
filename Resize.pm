@@ -1,12 +1,12 @@
 package Image::Resize;
 
-# $Id: Resize.pm,v 1.4 2005/10/30 01:21:05 sherzodr Exp $
+# $Id: Resize.pm,v 1.5 2005/11/04 23:44:59 sherzodr Exp $
 
 use strict;
 use Carp ('croak');
 use GD;
 
-$Image::Resize::VERSION = '0.4';
+$Image::Resize::VERSION = '0.5';
 
 # Thanks to Paul Allen <paul.l.allen AT comcast.net> for this tip
 GD::Image->trueColor( 1 );

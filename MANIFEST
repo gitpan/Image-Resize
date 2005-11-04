@@ -1,8 +1,8 @@
 Changes
 Makefile.PL
-MANIFEST
+MANIFEST			This list of files
 README
 Resize.pm
 t/1.t
-t/large.jpg
+t/large
 META.yml                                 Module meta-data (added by MakeMaker)
